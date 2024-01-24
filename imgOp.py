@@ -66,12 +66,12 @@ def sample_face(gts, embbs):
     return gts_sampler, embbs_sampler
     
     
-def delete_features(gts_ibc, embb_ibc, rm_ids):
-    idx_to_remove = np.where(gts_ibc==rm_ids)[0]
-    print(len(idx_to_remove), gts_ibc.shape, embb_ibc.shape)
+def delete_features(gts_ibc, embb_ibc, rm_ids:list):
+    idx_to_remove = np.concatenate([np.where(gts_ibc == id)[0] for id in rm_ids])
+    print("previous", idx_to_remove.shape, gts_ibc.shape, embb_ibc.shape)
     gts_ibc = np.delete(gts_ibc, idx_to_remove, axis=0)
     embb_ibc = np.delete(embb_ibc, idx_to_remove, axis=0)
-    print(gts_ibc.shape, embb_ibc.shape)
+    print("current", gts_ibc.shape, embb_ibc.shape)
     return gts_ibc, embb_ibc
 
 def replace_features(gts_ibc, gts_sampler: list, embb_ibc, embbs_sampler: list):
