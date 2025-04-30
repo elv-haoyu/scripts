@@ -46,7 +46,7 @@ def download_image(name_url):
     try:
         response = request.urlopen(url, timeout=10)
         image_data = response.read()
-    except:
+    except Exception:
         print('Warning: Fail to download image from {}'.format(url))
         return
 
@@ -69,20 +69,22 @@ def download_image(name_url):
         return
     print('Image {} completecd.'.format(url))
     return
-#dl_dir = '/pool0/ml/elv-xuwen/MS-Celeb-1M/raw_dataset/'
-dl_dir = '/pool0/ml/elv-xuwen/MS-Celeb-1M/vcl/'
-source_file = '/pool0/ml/elv-youliangyu/data/MS-Celeb-1M/FaceImageCroppedWithOutAlignment.tsv'
-start = 0
-#end = 7000000
 
-#giphy_names = np.load('./giphy_names.npy', allow_pickle=True)
-giphy_names = np.load('./vcl.npy', allow_pickle=True)
-name_url_list = parse_data(source_file, start)
-print('name_url_list length', len(name_url_list))
-pool = multiprocessing.Pool(processes=16)  # Num of CPUs
-# pool.map(download_image, name_url_list)
-tqdm.tqdm(pool.map(download_image, name_url_list))
-# failures = sum(tqdm.tqdm(pool.imap_unordered(download_image, name_url_list), total=len(name_url_list)))
+if __name__ == '__main__':
+    #dl_dir = 'MS-Celeb-1M/raw_dataset/'
+    dl_dir = 'MS-Celeb-1M/vcl/'
+    source_file = '/ml/elv-youliangyu/data/MS-Celeb-1M/FaceImageCroppedWithOutAlignment.tsv'
+    start = 0
+    #end = 7000000
 
-pool.close()
-pool.terminate()
+    #giphy_names = np.load('./giphy_names.npy', allow_pickle=True)
+    giphy_names = np.load('./vcl.npy', allow_pickle=True)
+    name_url_list = parse_data(source_file, start)
+    print('name_url_list length', len(name_url_list))
+    pool = multiprocessing.Pool(processes=16)  # Num of CPUs
+    # pool.map(download_image, name_url_list)
+    tqdm.tqdm(pool.map(download_image, name_url_list))
+    # failures = sum(tqdm.tqdm(pool.imap_unordered(download_image, name_url_list), total=len(name_url_list)))
+
+    pool.close()
+    pool.terminate()

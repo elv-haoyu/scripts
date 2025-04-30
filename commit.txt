@@ -1,0 +1,12 @@
+TQW=$(elv content token create $qid --update --secret $pkey | jq -r .bearer)
+AUTHOR_ADDRESS=0xe82ae128aceb4cd7a6e64624e0f33035af43e374
+TIMESTAMP=$(TZ=America/Los_Angeles date +"%B %d, %Y at %I:%M:%S %p PDT")
+MESSAGE="Add Athlete event tags"
+lid=ilib4HjZxzmrTuhSEZBFXynsvpatdVJN
+CONFIGURL="https://main.net955305.contentfabric.io/config"
+elv content meta merge $TQW  \
+        "{\"author\":\"the-cowboy-network-tenant-ops\",\"author_address\":\"$AUTHOR_ADDRESS\",\"message\":\"$MESSAGE\",\"timestamp\":\"$TIMESTAMP\"}" \
+        commit --qid ${qid} --library ${lid} --config-url ${CONFIGURL} > /dev/null
+
+elv files upload video_tags/$qid/video_tags/ -l ilib4HjZxzmrTuhSEZBFXynsvpatdVJN  -q $qid --dest-path video_tags $TQW --force-no-encrypt 
+
